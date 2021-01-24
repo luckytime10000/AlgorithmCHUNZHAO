@@ -1,0 +1,31 @@
+# 189. 旋转数组
+
+class Solution(object):
+    def rotate(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: None Do not return anything, modify nums in-place instead.
+        """
+        len_nums = len(nums)
+        if k == 0 or k % len_nums == 0:
+            return nums
+        
+        k = k % len_nums    # k大于nums长度时修改k值
+
+        tmp = []    # 存放后k个数
+        for ele in nums[-k:]:
+            tmp.append(ele)
+
+        # 从后往前赋值  n-k 个数
+        index = len(nums)-1
+        num = len(nums) - k
+        while index >= k:   # 将前n-k个数后移
+            nums[index] = nums[index-k]
+            index -= 1
+
+        # 前面k个数赋值
+        for i in range(len(tmp)):
+            nums[i] = tmp[i]
+
+        return nums

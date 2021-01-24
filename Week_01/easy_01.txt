@@ -1,0 +1,20 @@
+# 26. 删除排序数组中的重复项
+
+class Solution(object):
+    def removeDuplicates(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        index = 0
+        length_nums = len(nums)
+        for i in range(length_nums):
+            if i+1 == length_nums:      # 最后一个数
+                nums[index] = nums[i]
+            
+            if i+1 < length_nums and nums[i] == nums[i+1]:
+                continue
+            else:
+                nums[index] = nums[i]
+                index += 1
+        return index

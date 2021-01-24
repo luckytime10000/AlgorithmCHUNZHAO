@@ -1,0 +1,36 @@
+# 49. ×ÖÄ¸ÒìÎ»´Ê·Ö×é
+
+class Solution(object):
+    def groupAnagrams(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: List[List[str]]
+        """
+        result = []
+        prime =  [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101]
+        primeSum = [0] * len(strs)
+
+        for i in range(len(strs)):
+            if len(strs[i]) == 0:
+                continue
+            s = 1
+            for e in strs[i]:
+                s *= prime[ord(e) - 97]
+            primeSum[i] = s
+
+        sign = [False] * len(strs)
+        for i in range(len(strs)):
+            if sign[i]:
+                continue
+            tmp = []
+            tmp.append(strs[i])
+            for j in range(i+1, len(strs)):
+                if sign[j]:
+                    continue
+                if primeSum[i] == primeSum[j]:
+                    tmp.append(strs[j])
+                    sign[j] = True
+
+            result.append(tmp)
+
+        return result

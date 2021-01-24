@@ -1,0 +1,21 @@
+# 242. 有效的字母异位词
+
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        //'a' -> 97
+        int a[30] = {0};
+        int b[30] = {0};
+        int len = s.length();
+        int blen = t.length();
+        if (blen != len) return false;
+        for(int i=0; i<len; i++) {
+            a[s[i]-97]++;
+            b[t[i]-97]++;
+        }
+        for(int i=0; i<30; i++) {
+            if (a[i] != b[i]) return false;
+        }
+        return true;
+    }
+};

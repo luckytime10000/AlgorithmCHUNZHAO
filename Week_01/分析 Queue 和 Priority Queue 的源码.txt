@@ -1,0 +1,130 @@
+# Queue
+
+// 源码来自 ArrayDeque.java
+public interface Queue<E> extends Collection<E> {
+
+    boolean add(E e);		// 直接调用 addLast(e)
+		public void addLast(E e) {
+		// 判空
+        if (e == null)
+            throw new NullPointerException();
+		
+		// 将插入元素放入 尾下标 处
+        elements[tail] = e;
+		
+		// 若插入后队满  空间加倍  数据从 head 处切开 右边的放入新队列的左边， 剩下的接上 
+        if ( (tail = (tail + 1) & (elements.length - 1)) == head)
+            doubleCapacity();
+		}
+
+    boolean offer(E e);			// 直接调用 offerLast(e)   
+		// offerLast(e)  直接调用 addLast(e)
+
+    E remove();		// 直接调用 removeFirst()
+		// removeFirst()  直接调用 pollFirst() , 多了异常抛出
+		
+		public E pollFirst() {
+			//  取对头元素， 判空
+			int h = head;
+			E result = (E) elements[h];
+			if (result == null)
+				return null;
+				
+			// 成功取出，将队列中该元素置空
+			elements[h] = null;    
+			// 头指针前移，(同时取余？)
+			head = (h + 1) & (elements.length - 1);
+			return result;
+		}
+	
+    E poll();		// 直接调用  pollFirst();
+		
+
+    E element();	// 直接调用  getFirst()
+		// 直接返回  elements[head]   加上判空，抛异常
+
+    E peek();		 // 直接调用 peekFirst();
+		//  peekFirst   直接返回   elements[head];
+}
+
+
+
+
+
+# PriorityQueue
+public class PriorityQueue<E> extends AbstractQueue<E>
+    implements java.io.Serializable {
+
+    public boolean add(E e) {	// 直接调用 offer(e)
+        return offer(e);
+    }
+	
+	public boolean remove(Object o) {
+		// 先计算 o 在队列中的下标
+        int i = indexOf(o);
+		
+		// 非法下标 返回 false
+		// 合法下标， 移除
+        if (i == -1)
+            return false;
+        else {
+            removeAt(i);
+            return true;
+        }
+    }
+	
+    public E poll() {
+		// 队空 返回 null
+        if (size == 0)
+            return null;
+		
+        int s = --size;
+        modCount++;		// 队不空 修改次数自加
+		
+		// 队头元素放入 result 最后返回
+        E result = (E) queue[0];
+		 
+		// x 存放下标最大的元素 queue[s]    s 处置空    
+        E x = (E) queue[s];
+        queue[s] = null;
+		
+		// 如果队不空 调用 siftDown 函数将x 放到正确位置
+        if (s != 0)
+            siftDown(0, x);
+        return result;
+    }
+	
+	
+	
+    public boolean offer(E e) {
+		//	先判断 e 是不是空指针
+        if (e == null)		
+            throw new NullPointerException();
+			
+		// e 不是空指针， 进行插入   先将修改次数自加
+        modCount++;		
+        int i = size;
+		
+		// 若队满 则扩容
+        if (i >= queue.length)	
+            grow(i + 1);
+        size = i + 1;
+		
+		// 若队空 则在下标 0 处赋值，否则调用 siftUp(i,e) 在正确位置插入
+        if (i == 0)		
+            queue[0] = e;
+        else
+            siftUp(i, e);
+        return true;
+    }
+
+    
+	E peek();
+	// 若队空 返回 null   否则返回 queue[0]
+}	
+
+
+
+
+
+

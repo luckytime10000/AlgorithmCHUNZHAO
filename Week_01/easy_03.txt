@@ -1,0 +1,45 @@
+# 21. 合并两个有序链表
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def mergeTwoLists(self, l1, l2):
+        """
+        :type l1: ListNode
+        :type l2: ListNode
+        :rtype: ListNode
+        """
+        if l1 is None:
+            return l2
+        elif l2 is None:
+            return l1
+        
+        # 先确定头节点
+        result = None
+        if l2.val < l1.val:
+            result = l2
+            l2 = l2.next
+        else:
+            result = l1
+            l1 = l1.next
+
+        p = result  # 当前处理的结点
+        while l1 is not None and l2 is not None:
+            if l2.val < l1.val:
+                p.next = l2
+                p = p.next
+                l2 = l2.next
+            else:
+                p.next = l1
+                p = p.next
+                l1 = l1.next
+
+        if l1 is None:
+            p.next = l2
+        elif l2 is None:
+            p.next = l1
+        
+        return result
