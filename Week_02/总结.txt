@@ -1,0 +1,18 @@
+这周的递归，学的闹阔疼！！！！！！
+
+
+
+二叉树递归模板(7行)
+
+vector<int> inorderTraversal(TreeNode* root) {
+    vector<int> result;
+    dfs(root, result);
+    return result;
+}
+
+void dfs(TreeNode* root, vector<int> &result) {
+    if (!root) return;
+    dfs(root->left, result);
+    result.emplace_back(root->val);
+    dfs(root->right, result);
+}
